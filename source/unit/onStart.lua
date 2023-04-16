@@ -578,45 +578,85 @@ MyCoroutines = {
                         if not elementType:lower():find("hub") then
                             local containerMaxHP = core.getElementMaxHitPointsById(id)
                             if containerMaxHP > 68000 then
-                                container_size = "XXL"
-                                container_empty_mass = 88410
-                                container_volume = 512000 * (options.container_proficiency_lvl * 0.1) + 512000
+                                if splitted[3] then
+                                    container_size = splitted[3]
+                                    container_volume = tonumber(container_size) * ingredient.volume
+                                else
+                                    container_size = "XXL"
+                                    container_volume = 512000 * (options.container_proficiency_lvl * 0.1) + 512000
+                                end
+                                container_empty_mass = getIngredient("Expanded Container XL").mass
                             elseif containerMaxHP > 33000 then
-                                container_size = "XL"
-                                container_empty_mass = 44210
-                                container_volume = 256000 * (options.container_proficiency_lvl * 0.1) + 256000
+                                if splitted[3] then
+                                    container_size = splitted[3]
+                                    container_volume = tonumber(container_size) * ingredient.volume
+                                else
+                                    container_size = "XL"
+                                    container_volume = 256000 * (options.container_proficiency_lvl * 0.1) + 256000
+                                end
+                                container_empty_mass = getIngredient("Container XL").mass
                             elseif containerMaxHP > 17000 then
-                                container_size = "L"
-                                container_empty_mass = 14842.7
-                                container_volume = 128000 * (options.container_proficiency_lvl * 0.1) + 128000
+                                if splitted[3] then
+                                    container_size = splitted[3]
+                                    container_volume = tonumber(container_size) * ingredient.volume
+                                else
+                                    container_size = "L"
+                                    container_volume = 128000 * (options.container_proficiency_lvl * 0.1) + 128000
+                                end
+                                container_empty_mass = getIngredient("Container L").mass
                             elseif containerMaxHP > 7900 then
-                                container_size = "M"
-                                container_empty_mass = 7421.35
-                                container_volume = 64000 * (options.container_proficiency_lvl * 0.1) + 64000
+                                if splitted[3] then
+                                    container_size = splitted[3]
+                                    container_volume = tonumber(container_size) * ingredient.volume
+                                else
+                                    container_size = "M"
+                                    container_volume = 64000 * (options.container_proficiency_lvl * 0.1) + 64000
+                                end
+                                container_empty_mass = getIngredient("Container M").mass
                             elseif containerMaxHP > 900 then
-                                container_size = "S"
-                                container_empty_mass = 1281.31
-                                container_volume = 8000 * (options.container_proficiency_lvl * 0.1) + 8000
+                                if splitted[3] then
+                                    container_size = splitted[3]
+                                    container_volume = tonumber(container_size) * ingredient.volume
+                                else
+                                    container_size = "S"
+                                    container_volume = 8000 * (options.container_proficiency_lvl * 0.1) + 8000
+                                end
+                                container_empty_mass = getIngredient("Container S").mass
                             else
-                                container_size = "XS"
-                                container_empty_mass = 229.09
-                                container_volume = 1000 * (options.container_proficiency_lvl * 0.1) + 1000
+                                if splitted[3] then
+                                    container_size = splitted[3]
+                                    container_volume = tonumber(container_size) * ingredient.volume
+                                else
+                                    container_size = "XS"
+                                    container_volume = 1000 * (options.container_proficiency_lvl * 0.1) + 1000
+                                end
+                                container_empty_mass = getIngredient("Container XS").mass
                             end
                         else
                             if splitted[3] then
                                 container_size = splitted[3]
                             end
-                            if splitted[4] then
+                            if splitted[4] then 
                                 container_amount = splitted[4]
                             end
                             local volume = 0
-                            container_volume_list = {xxl=512000, xl=256000, l=128000, m=64000, s=8000, xs=1000}
-                            container_size = container_size:lower()
-                            if container_volume_list[container_size] then
-                                volume = container_volume_list[container_size]
+                            local maintain = 0
+                            if container_size:lower() == "xxl" then volume = 512000
+                            elseif container_size:lower() == "xl" then volume = 256000
+                            elseif container_size:lower() == "l" then volume = 128000
+                            elseif container_size:lower() == "m" then volume = 64000
+                            elseif container_size:lower() == "s" then volume = 8000
+                            elseif container_size:lower() == "xs" then volume = 1000
+                            else volume = tonumber(container_size)
+                                maintain = 1
                             end
-                            container_volume = (volume * options.container_proficiency_lvl * 0.1 + volume) * tonumber(container_amount)
-                            container_empty_mass = 55.8
+                            if maintain == 1 then
+                                container_volume = volume * ingredient.volume
+                            else
+                            container_volume = volume * (options.container_proficiency_lvl * 0.1) + volume
+                            container_volume = container_volume * tonumber(container_amount)
+                            end
+                            container_empty_mass = getIngredient("Container Hub").mass
                         end
                         local totalMass = core.getElementMassById(id)
                         local contentMassKg = totalMass - container_empty_mass
