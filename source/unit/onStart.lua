@@ -656,7 +656,7 @@ MyCoroutines = {
                             container_volume = volume * (options.container_proficiency_lvl * 0.1) + volume
                             container_volume = container_volume * tonumber(container_amount)
                             end
-                            container_empty_mass = getIngredient("Container Hub").mass
+                            container_empty_mass = 55.8
                         end
                         local totalMass = core.getElementMassById(id)
                         local contentMassKg = totalMass - container_empty_mass
